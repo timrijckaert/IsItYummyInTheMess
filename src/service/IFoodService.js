@@ -1,3 +1,3 @@
 export class IFoodService {
-    getFoodOptionsOfToday();
+    getFoodOptionsOfToday() {}
 }

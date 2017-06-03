@@ -6,7 +6,8 @@ class DatabaseHelper {
     }
 
     saveResultFor(date, results) {
-        return true;
+        const resultsWithTodayDate = results.map((result) => result.date = date);
+        alert(resultsWithTodayDate);
     }
 }
 
