@@ -11,7 +11,6 @@ export class DbMenu {
     }
 }
 
-
 DbMenu.REALM_NAME = "DbMenu";
 DbMenu.schema = {
     name: DbMenu.REALM_NAME,

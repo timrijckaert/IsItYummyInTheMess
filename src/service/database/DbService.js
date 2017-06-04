@@ -12,7 +12,7 @@ class DbService extends IFoodService {
         const databaseHelper = this._databaseHelper;
         const today = this._dateHelper.today();
         return new Promise((resolve, _) => {
-            resolve(databaseHelper.getMenuFor(today));
+            resolve(databaseHelper.getFoodOptionsForDate(today));
         });
     }
 }

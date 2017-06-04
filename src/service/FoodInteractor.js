@@ -11,8 +11,8 @@ class FoodInteractor extends IFoodService {
     }
 
     getFoodOptionsOfToday() {
-        let networkObservable = this._getRemoteObservable(this._databaseHelper);
-        let dbObservable = this._getLocalObservable();
+        const networkObservable = this._getRemoteObservable(this._databaseHelper);
+        const dbObservable = this._getLocalObservable();
 
         //noinspection JSUnresolvedFunction
         Rx.Observable.merge(
@@ -20,21 +20,31 @@ class FoodInteractor extends IFoodService {
             dbObservable
         )
             .first()
-            .subscribe(val => {
-                alert(val);
-            });
+            .subscribe(
+                val => {
+                    alert(`Receiving results from: ${val.name}.`);
+                }, err => {
+                    alert(`Error occurred: ${err}`);
+                }, () => {}
+            );
     }
 
     _getLocalObservable() {
         return Rx.Observable
-            .fromPromise(this._dbService.getFoodOptionsOfToday());
+            .fromPromise(this._dbService.getFoodOptionsOfToday())
+            .filter((arr) => arr.length >= 1)
+            .map((element) => {
+                return {name: "Db", x: element}
+            });
     }
 
     _getRemoteObservable(databaseHelper) {
-        return Rx.Observable.empty();
-/*        Rx.Observable
+        return Rx.Observable
             .fromPromise(this._networkService.getFoodOptionsOfToday())
-            .map((networkResult) => databaseHelper.saveResultFor(networkResult));*/
+            .map((networkResult) => databaseHelper.saveFoodOptions(networkResult))
+            .map((element) => {
+                return {name: "Nw", x: element}
+            });
     }
 }
 

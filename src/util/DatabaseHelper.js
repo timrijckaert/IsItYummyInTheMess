@@ -1,4 +1,8 @@
-import {DbFoodOption, DbMenu} from '../model';
+import {
+    DbFoodOption,
+    DbMenu,
+    FoodOption
+} from '../model';
 
 class DatabaseHelper {
 
@@ -7,17 +11,23 @@ class DatabaseHelper {
         this._realm = realm;
     }
 
-    saveResultFor(foodOptionsArr) {
+    saveFoodOptions(foodOptionsArr) {
         let todaysDateStr = this._dateHelper.today();
         const dbFoodOptions = Array.from(foodOptionsArr, foodOption =>
             new DbFoodOption(`${todaysDateStr}${foodOption.title}`, foodOption.title, foodOption.option)
         );
         const dbMenu = new DbMenu(dbFoodOptions, todaysDateStr);
-        this._realm.write(() => {this._realm.create(DbMenu.realmClassName(), dbMenu)});
+        this._realm.write(() => {
+            this._realm.create(DbMenu.realmClassName(), dbMenu)
+        });
     }
 
-    getMenuFor(date) {
-        return new DbMenu(null, this._dateHelper.today());
+    getFoodOptionsForDate(date) {
+        const mapDbFoodOptionToFoodOption = (foodOption) => new FoodOption(foodOption._title, foodOption._option);
+        //noinspection JSUnresolvedFunction
+        const menuForDate = this._realm.objects(DbMenu.realmClassName()).filtered(`_date = "${date}"`);
+        const foodOptionsArr = menuForDate.map((dbMenu) => dbMenu._dbFoodOptions.map((dbFoodOption) => mapDbFoodOptionToFoodOption(dbFoodOption)));
+        return foodOptionsArr.length >= 1 ? foodOptionsArr[0] : foodOptionsArr;
     }
 }
 
