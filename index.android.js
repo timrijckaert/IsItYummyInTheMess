@@ -10,14 +10,17 @@ import {NetworkService} from './src/service/network/NetworkService';
 import {DbService} from './src/service/database/DbService';
 import {DateHelper} from "./src/util/DateHelper";
 import {DatabaseHelper} from "./src/util/DatabaseHelper";
+import {DbFoodOption, DbMenu} from "./src/model"
+const Realm = require('realm');
 
 export default class IsHetLekkerInDeMess extends Component {
 
     _handleButtonClick = () => {
+        let realm = new Realm({schema: [DbFoodOption.schema, DbMenu.schema]});
         let networkService = new NetworkService();
-        let dbService = new DbService();
         let dateHelper = new DateHelper();
-        let databaseHelper = new DatabaseHelper(dateHelper);
+        let databaseHelper = new DatabaseHelper(realm, dateHelper);
+        let dbService = new DbService(databaseHelper, dateHelper);
         let foodInteractor = new FoodInteractor(networkService, dbService, databaseHelper);
 
         foodInteractor.getFoodOptionsOfToday()

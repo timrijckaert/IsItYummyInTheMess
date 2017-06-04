@@ -1,4 +1,4 @@
-class DateHelper {
+export class DateHelper {
     today() {
         let today = new Date();
         let dd = today.getDate();
@@ -16,5 +16,3 @@ class DateHelper {
         return `${dd}/${mm}/${yyyy}`;
     }
 }
-
-export {DateHelper};

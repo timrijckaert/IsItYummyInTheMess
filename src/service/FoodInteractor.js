@@ -20,19 +20,21 @@ class FoodInteractor extends IFoodService {
             dbObservable
         )
             .first()
-            .subscribe(val => {});
+            .subscribe(val => {
+                alert(val);
+            });
     }
 
     _getLocalObservable() {
         return Rx.Observable
-            .fromPromise(this._dbService.getFoodOptionsOfToday())
-            .delay(3000);
+            .fromPromise(this._dbService.getFoodOptionsOfToday());
     }
 
     _getRemoteObservable(databaseHelper) {
-        return Rx.Observable
+        return Rx.Observable.empty();
+/*        Rx.Observable
             .fromPromise(this._networkService.getFoodOptionsOfToday())
-            .map((networkResult) => databaseHelper.saveResultFor(networkResult));
+            .map((networkResult) => databaseHelper.saveResultFor(networkResult));*/
     }
 }
 
