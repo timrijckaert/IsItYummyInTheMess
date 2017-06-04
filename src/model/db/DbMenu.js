@@ -14,6 +14,7 @@ export class DbMenu {
 DbMenu.REALM_NAME = "DbMenu";
 DbMenu.schema = {
     name: DbMenu.REALM_NAME,
+    primaryKey: '_date',
     properties: {
         _dbFoodOptions: {type: 'list', objectType: DbFoodOption.realmClassName()},
         _date: 'string'

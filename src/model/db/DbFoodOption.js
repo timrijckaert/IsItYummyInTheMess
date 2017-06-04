@@ -13,7 +13,9 @@ export class DbFoodOption {
 DbFoodOption.REALM_NAME = "DbFoodOption";
 DbFoodOption.schema = {
     name: DbFoodOption.REALM_NAME,
+    primaryKey: '_id',
     properties: {
+        _id: 'string',
         _title: 'string',
         _option: 'string'
     }

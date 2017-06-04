@@ -11,7 +11,7 @@ class DatabaseHelper {
         this._realm = realm;
     }
 
-    saveFoodOptions(foodOptionsArr) {
+    saveFoodOptionsForToday(foodOptionsArr) {
         let todaysDateStr = this._dateHelper.today();
         const dbFoodOptions = Array.from(foodOptionsArr, foodOption =>
             new DbFoodOption(`${todaysDateStr}${foodOption.title}`, foodOption.title, foodOption.option)
@@ -20,6 +20,10 @@ class DatabaseHelper {
         this._realm.write(() => {
             this._realm.create(DbMenu.realmClassName(), dbMenu)
         });
+    }
+
+    getFoodOptionsForToday() {
+        return this.getFoodOptionsForDate(this._dateHelper.today());
     }
 
     getFoodOptionsForDate(date) {

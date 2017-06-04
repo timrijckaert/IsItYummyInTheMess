@@ -20,7 +20,7 @@ export default class IsHetLekkerInDeMess extends Component {
         let networkService = new NetworkService();
         let dateHelper = new DateHelper();
         let databaseHelper = new DatabaseHelper(realm, dateHelper);
-        let dbService = new DbService(databaseHelper, dateHelper);
+        let dbService = new DbService(databaseHelper);
         let foodInteractor = new FoodInteractor(networkService, dbService, databaseHelper);
 
         foodInteractor.getFoodOptionsOfToday()

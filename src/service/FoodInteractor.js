@@ -41,7 +41,7 @@ class FoodInteractor extends IFoodService {
     _getRemoteObservable(databaseHelper) {
         return Rx.Observable
             .fromPromise(this._networkService.getFoodOptionsOfToday())
-            .map((networkResult) => databaseHelper.saveFoodOptions(networkResult))
+            .map((networkResult) => databaseHelper.saveFoodOptionsForToday(networkResult))
             .map((element) => {
                 return {name: "Nw", x: element}
             });
