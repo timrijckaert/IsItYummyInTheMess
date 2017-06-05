@@ -88,7 +88,7 @@ android {
 
     defaultConfig {
         applicationId "com.ishetlekkerindemess"
-        minSdkVersion 16
+        minSdkVersion 21
         targetSdkVersion 22
         versionCode 1
         versionName "1.0"
@@ -126,6 +126,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-background-job')
     compile project(':react-native-push-notification')
     compile project(':realm')
     compile fileTree(dir: "libs", include: ["*.jar"])
