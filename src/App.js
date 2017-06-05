@@ -5,32 +5,19 @@ import {
     Button
 } from 'react-native';
 
-import {FoodInteractor} from './service/FoodInteractor';
-import {NetworkService} from './service/network/NetworkService';
-import {DbService} from './service/database/DbService';
-import {DateHelper} from "./util/DateHelper";
-import {DatabaseHelper} from "./util/DatabaseHelper";
-import {DbFoodOption, DbMenu} from "./model"
 const PushNotification = require('react-native-push-notification');
-const Realm = require('realm');
+import {foodInteractor} from './DI';
 
 class App extends Component {
 
     _handleButtonClick = () => {
-        let realm = new Realm({schema: [DbFoodOption.schema, DbMenu.schema]});
-        let networkService = new NetworkService();
-        let dateHelper = new DateHelper();
-        let databaseHelper = new DatabaseHelper(realm, dateHelper);
-        let dbService = new DbService(databaseHelper);
-        let foodInteractor = new FoodInteractor(networkService, dbService, databaseHelper);
-
-        foodInteractor.getFoodOptionsOfToday();
-        // .subscribe(
-        //     val => alert(`Receiving results from: ${val}.`),
-        //     err => {
-        //         alert(`Error occurred: ${err}`);
-        //     }
-        // );
+        foodInteractor().getFoodOptionsOfToday()
+            .subscribe(
+                val => alert(`Receiving results from: ${val}.`),
+                err => {
+                    alert(`Error occurred: ${err}`);
+                }
+            );
     };
 
     _handleShowNotification = (delayInSec: Number = 0) => {
