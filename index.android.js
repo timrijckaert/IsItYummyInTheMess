@@ -17,11 +17,6 @@ const Realm = require('realm');
 
 export default class IsHetLekkerInDeMess extends Component {
 
-    componentWillMount() {
-        return super.componentWillMount();
-        //this._registerBackgroundTask();
-    }
-
     _handleButtonClick = () => {
         let realm = new Realm({schema: [DbFoodOption.schema, DbMenu.schema]});
         let networkService = new NetworkService();
@@ -77,13 +72,6 @@ export default class IsHetLekkerInDeMess extends Component {
                 <Button title="Dispatch Notification in 10 seconds" onPress={() => this._handleShowNotification(10)}/>
             </View>
         );
-    }
-
-    _registerBackgroundTask() {
-        // BackgroundTask.register(() => {
-        //     this._handleShowNotification();
-        //     BackgroundTask.finish()
-        // });
     }
 }
 
