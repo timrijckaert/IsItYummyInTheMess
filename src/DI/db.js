@@ -5,17 +5,9 @@ import {lazy} from '../util/lazy';
 import {dateHelper} from './utils';
 const Realm = require('realm');
 
-const realm = lazy(() => {
-    return new Realm({schema: [DbFoodOption.schema, DbMenu.schema]})
-});
-
-const databaseHelper = lazy(() => {
-    return new DatabaseHelper(realm(), dateHelper());
-});
-
-const dbService = lazy(() => {
-    return new DbService(databaseHelper());
-});
+const realm = lazy(() =>  new Realm({schema: [DbFoodOption.schema, DbMenu.schema]}));
+const databaseHelper = lazy(() => new DatabaseHelper(realm(), dateHelper()));
+const dbService = lazy(() => new DbService(databaseHelper()));
 
 export {
     databaseHelper,
