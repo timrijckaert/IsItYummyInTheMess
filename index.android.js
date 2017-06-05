@@ -12,9 +12,15 @@ import {DbService} from './src/service/database/DbService';
 import {DateHelper} from "./src/util/DateHelper";
 import {DatabaseHelper} from "./src/util/DatabaseHelper";
 import {DbFoodOption, DbMenu} from "./src/model"
+const PushNotification = require('react-native-push-notification');
 const Realm = require('realm');
 
 export default class IsHetLekkerInDeMess extends Component {
+
+    componentWillMount() {
+        return super.componentWillMount();
+        //this._registerBackgroundTask();
+    }
 
     _handleButtonClick = () => {
         let realm = new Realm({schema: [DbFoodOption.schema, DbMenu.schema]});
@@ -24,21 +30,60 @@ export default class IsHetLekkerInDeMess extends Component {
         let dbService = new DbService(databaseHelper);
         let foodInteractor = new FoodInteractor(networkService, dbService, databaseHelper);
 
-        foodInteractor.getFoodOptionsOfToday()
-            .subscribe(
-                val => alert(`Receiving results from: ${val}.`),
-                err => {
-                    alert(`Error occurred: ${err}`);
-                }
-            );
+        foodInteractor.getFoodOptionsOfToday();
+        // .subscribe(
+        //     val => alert(`Receiving results from: ${val}.`),
+        //     err => {
+        //         alert(`Error occurred: ${err}`);
+        //     }
+        // );
+    };
+
+    _handleShowNotification = (delayInSec: Number = 0) => {
+        const details = {
+            id: '0',
+            ticker: "My Notification Ticker",
+            autoCancel: true,
+            largeIcon: "ic_launcher",
+            smallIcon: "ic_notification",
+            bigText: "My big text that will be shown when notification is expanded",
+            subText: "This is a subText",
+            color: "blue",
+            vibrate: true,
+            vibration: 300,
+            tag: 'some_tag',
+            group: "group",
+            ongoing: false,
+
+            title: "My Notification Title",
+            message: "My Notification Message",
+            playSound: true,
+            soundName: 'default',
+            number: '10'
+        };
+
+        if (delayInSec === 0) {
+            PushNotification.localNotification(details)
+        } else {
+            PushNotification.localNotificationSchedule({...details, date: new Date(Date.now() + (delayInSec * 1000))});
+        }
     };
 
     render() {
         return (
             <View style={styles.container}>
                 <Button title="Click me to scrape" onPress={this._handleButtonClick}/>
+                <Button title="Show Random Notification" onPress={() => this._handleShowNotification()}/>
+                <Button title="Dispatch Notification in 10 seconds" onPress={() => this._handleShowNotification(10)}/>
             </View>
         );
+    }
+
+    _registerBackgroundTask() {
+        // BackgroundTask.register(() => {
+        //     this._handleShowNotification();
+        //     BackgroundTask.finish()
+        // });
     }
 }
 
@@ -61,4 +106,5 @@ const styles = StyleSheet.create({
     },
 });
 
-AppRegistry.registerComponent('IsHetLekkerInDeMess', () => IsHetLekkerInDeMess);
+AppRegistry.registerComponent('IsHetLekkerInDeMess',
+    () => IsHetLekkerInDeMess);
