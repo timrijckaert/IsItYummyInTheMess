@@ -5,6 +5,7 @@ import {
     View,
     Button
 } from 'react-native';
+
 import {FoodInteractor} from './src/service/FoodInteractor';
 import {NetworkService} from './src/service/network/NetworkService';
 import {DbService} from './src/service/database/DbService';
@@ -24,6 +25,12 @@ export default class IsHetLekkerInDeMess extends Component {
         let foodInteractor = new FoodInteractor(networkService, dbService, databaseHelper);
 
         foodInteractor.getFoodOptionsOfToday()
+            .subscribe(
+                val => alert(`Receiving results from: ${val}.`),
+                err => {
+                    alert(`Error occurred: ${err}`);
+                }
+            );
     };
 
     render() {
