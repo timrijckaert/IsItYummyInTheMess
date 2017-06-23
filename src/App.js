@@ -5,12 +5,21 @@ import {
     Button
 } from 'react-native';
 
-const PushNotification = require('react-native-push-notification');
+import {VRT_ADDRESS_LAT, VRT_ADDRESS_LONG} from './util/Constants';
 import {foodInteractor} from './DI';
+import LocationBackgroundModule from "./util/native/LocationBackgroundModule";
+const PushNotification = require('react-native-push-notification');
 
 class App extends Component {
 
+
+    componentWillMount() {
+        const callbackTestFromNativeModule : String = LocationBackgroundModule.registerLocationListener(VRT_ADDRESS_LAT, VRT_ADDRESS_LONG);
+        alert(callbackTestFromNativeModule);
+    }
+
     _handleButtonClick = () => {
+        LocationBackgroundModule.showToast('Awesome from JS', LocationBackgroundModule.LONG);
         foodInteractor().getFoodOptionsOfToday()
             .subscribe(
                 val => alert(`Receiving results from: ${val}.`),

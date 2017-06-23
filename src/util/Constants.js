@@ -1,0 +1,4 @@
+const VRT_ADDRESS_LAT = "50.850726";
+const VRT_ADDRESS_LONG = "4.403197";
+
+export default { VRT_ADDRESS_LAT, VRT_ADDRESS_LONG }
