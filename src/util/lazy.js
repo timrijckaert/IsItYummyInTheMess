@@ -1,3 +1,4 @@
+//http://blog.gypsydave5.com/2015/03/21/lazy-eval-and-memo/
 function lazy(fn) {
     const args = arguments;
     let result;
