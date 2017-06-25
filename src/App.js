@@ -5,10 +5,24 @@ import {
     Button
 } from 'react-native';
 
-const PushNotification = require('react-native-push-notification');
-import {foodInteractor} from './DI';
+import {
+    foodInteractor,
+    VRT_VICINITY_JOB_KEY,
+    checkPeriodicVicinityOfVRTTower
+} from './DI';
+
+import BackgroundJob from "react-native-background-job";
 
 class App extends Component {
+
+    componentWillMount() {
+        BackgroundJob.cancel({jobKey: VRT_VICINITY_JOB_KEY});
+        BackgroundJob.schedule({
+            jobKey: VRT_VICINITY_JOB_KEY,
+            timeout: Number.MAX_SAFE_INTEGER,
+            persist: true
+        });
+    }
 
     _handleButtonClick = () => {
         foodInteractor().getFoodOptionsOfToday()
@@ -20,46 +34,19 @@ class App extends Component {
             );
     };
 
-    _handleShowNotification = (delayInSec: Number = 0) => {
-        const details = {
-            id: '0',
-            ticker: "My Notification Ticker",
-            autoCancel: true,
-            largeIcon: "ic_launcher",
-            smallIcon: "ic_notification",
-            bigText: "My big text that will be shown when notification is expanded",
-            subText: "This is a subText",
-            color: "blue",
-            vibrate: true,
-            vibration: 300,
-            tag: 'some_tag',
-            group: "group",
-            ongoing: false,
-
-            title: "My Notification Title",
-            message: "My Notification Message",
-            playSound: true,
-            soundName: 'default',
-            number: '10'
-        };
-
-        if (delayInSec === 0) {
-            PushNotification.localNotification(details)
-        } else {
-            PushNotification.localNotificationSchedule({...details, date: new Date(Date.now() + (delayInSec * 1000))});
-        }
-    };
-
     render() {
         return (
             <View style={styles.container}>
                 <Button title="Click me to scrape" onPress={this._handleButtonClick}/>
-                <Button title="Show Random Notification" onPress={() => this._handleShowNotification()}/>
-                <Button title="Dispatch Notification in 10 seconds" onPress={() => this._handleShowNotification(10)}/>
             </View>
         );
     }
 }
+
+BackgroundJob.register({
+    jobKey: VRT_VICINITY_JOB_KEY,
+    job: checkPeriodicVicinityOfVRTTower
+});
 
 const styles = StyleSheet.create({
     container: {
