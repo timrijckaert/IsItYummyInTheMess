@@ -1,57 +1,50 @@
 import LocationProviderModule from '../../util/NativeLocationProvider';
-import {dateHelper} from '../../DI';
+import {
+    foodInteractor,
+    dateHelper
+} from '../../DI';
 const PushNotification = require('react-native-push-notification');
 
 const VRT_VICINITY_JOB_KEY = "is-in-the-vicinity-of-VRT-tower-background-task";
 const VRT_ADDRESS_LAT = 50.853001;
 const VRT_ADDRESS_LONG = 4.401580;
-const TRESHOLD_VRT_VICINITY = 0.5; //km
+const THRESHOLD_VRT_VICINITY = 0.5; //km
 const EARTH_RADIUS = 6371; //km
-const NOTIFICATION_BUILDER = {
-    id: '0',
-    ticker: "My Notification Ticker",
-    autoCancel: true,
-    largeIcon: "ic_launcher",
-    smallIcon: "ic_notification",
-    bigText: "My big text that will be shown when notification is expanded",
-    subText: "This is a subText",
-    color: "blue",
-    vibrate: true,
-    vibration: 300,
-    tag: 'some_tag',
-    group: "group",
-    ongoing: false,
 
-    title: "My Notification Title",
-    message: "My Notification Message",
-    playSound: true,
-    soundName: 'default',
-    number: '10'
-};
-
-//Periodic function that runs in the background (at least for Android devices)
-//https://www.npmjs.com/package/react-native-background-job
-//https://facebook.github.io/react-native/docs/headless-js-android.html
-//Checks if you are in the vicinity (RADIUS) of the VRT tower.
-//TODO Go to a native implementation for Android
+//Checks if you are in the vicinity of the VRT (at least for Android devices)
+//Talks to a native module.
 const checkPeriodicVicinityOfVRTTower = async () => {
     await LocationProviderModule.getLastKnownLocation()
-        .then(({longitude, latitude}) => {
-            const distanceFromVRTTower = getDistanceFromVRT(latitude, longitude);
-            if (shouldShowNotification(distanceFromVRTTower)) {
-                PushNotification.localNotification(NOTIFICATION_BUILDER);
+        .then(({latitude, longitude}) => {
+            if (_shouldShowNotification(latitude, longitude)) {
+                _showNotification();
             }
         })
         .catch((error: Error) => {
-            console.log(`An error occurred: ${error.message}`)
+            console.log(`An error occurred when trying to fetch the users location: ${error.message}`)
         });
 };
 
-const shouldShowNotification = (distanceFromVRTTower) => {
-    (distanceFromVRTTower <= TRESHOLD_VRT_VICINITY) && dateHelper().isMidday();
+//<editor-fold desc="Helper Functions">
+const _showNotification = () => {
+    const processFoodOptionsToNotificationText = (foodOptions) => foodOptions
+        .filter((foodOption) => foodOption.option.length > 0)
+        .map((foodOption) => `${foodOption.title} - ${foodOption.option}`).join("\n");
+
+    foodInteractor().getFoodOptionsOfToday()
+        .subscribe(
+            foodOptions => {
+                const notificationText = processFoodOptionsToNotificationText(foodOptions);
+                PushNotification.localNotification(_buildNotification(notificationText));
+            }
+        );
 };
 
-const getDistanceFromVRT = (lat: Number, lon: Number) => {
+const _shouldShowNotification = (latitude, longitude) => {
+    (_getDistanceFromVRT(latitude, longitude) <= THRESHOLD_VRT_VICINITY) && dateHelper().isMidday();
+};
+
+const _getDistanceFromVRT = (lat: Number, lon: Number) => {
     const deg2rad = (deg) => deg * (Math.PI / 180);
     const dLat = deg2rad(VRT_ADDRESS_LAT - lat);
     const dLon = deg2rad(VRT_ADDRESS_LONG - lon);
@@ -63,5 +56,29 @@ const getDistanceFromVRT = (lat: Number, lon: Number) => {
 
     return EARTH_RADIUS * c;
 };
+
+const _buildNotification = (notificationText : String) => {
+    return {
+        id: '0',
+        ticker: "My Notification Ticker",
+        autoCancel: true,
+        largeIcon: "ic_launcher",
+        smallIcon: "ic_notification",
+        bigText: notificationText,
+        subText: `Menu voor: ${dateHelper().today()}`,
+        color: "blue",
+        vibrate: true,
+        vibration: 300,
+        tag: 'some_tag',
+        group: "group",
+        ongoing: false,
+        title: "Is Het Lekker in de Mess",
+        message: "Ja natuurlijk is het lekker in de Mess!",
+        playSound: true,
+        soundName: 'default',
+        number: '10'
+    }
+};
+//</editor-fold>
 
 export {VRT_VICINITY_JOB_KEY, checkPeriodicVicinityOfVRTTower};
