@@ -39,7 +39,7 @@ const _showNotification = () => {
         );
 };
 
-const _shouldShowNotification = (latitude, longitude) => {
+const _shouldShowNotification = (latitude: Number, longitude: Number) => {
     (_getDistanceFromVRT(latitude, longitude) <= THRESHOLD_VRT_VICINITY) && dateHelper().isMidday();
 };
 
@@ -56,7 +56,7 @@ const _getDistanceFromVRT = (lat: Number, lon: Number) => {
     return EARTH_RADIUS * c;
 };
 
-const _buildNotification = (notificationText : String) => {
+const _buildNotification = (notificationText: String) => {
     return {
         id: '0',
         ticker: "My Notification Ticker",

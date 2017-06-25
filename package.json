@@ -8,8 +8,8 @@
   },
   "dependencies": {
     "cheerio-without-node-native": "0.20.2",
-    "react": "16.0.0-alpha.6",
-    "react-native": "0.45",
+    "react": "16.0.0-alpha.12",
+    "react-native": "0.45.1",
     "react-native-background-fetch": "2.0.6",
     "react-native-background-job": "1.2.4-0",
     "react-native-background-task": "0.1.0",
