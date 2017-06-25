@@ -28,7 +28,6 @@ const checkPeriodicVicinityOfVRTTower = async () => {
 //<editor-fold desc="Helper Functions">
 const _showNotification = () => {
     const processFoodOptionsToNotificationText = (foodOptions) => foodOptions
-        .filter((foodOption) => foodOption.option.length > 0)
         .map((foodOption) => `${foodOption.title} - ${foodOption.option}`).join("\n");
 
     foodInteractor().getFoodOptionsOfToday()
