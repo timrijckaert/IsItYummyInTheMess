@@ -16,10 +16,11 @@ import BackgroundJob from "react-native-background-job";
 class App extends Component {
 
     componentWillMount() {
-        BackgroundJob.cancel({jobKey: VRT_VICINITY_JOB_KEY});
+        BackgroundJob.cancelAll();
         BackgroundJob.schedule({
             jobKey: VRT_VICINITY_JOB_KEY,
             timeout: Number.MAX_SAFE_INTEGER,
+            period: 1 * 60 * 60 * 1000, // 1 hour
             persist: true
         });
     }

@@ -1,10 +1,12 @@
 import LocationProviderModule from '../../util/NativeLocationProvider';
+import {dateHelper} from '../../DI';
 const PushNotification = require('react-native-push-notification');
 
 const VRT_VICINITY_JOB_KEY = "is-in-the-vicinity-of-VRT-tower-background-task";
 const VRT_ADDRESS_LAT = 50.853001;
 const VRT_ADDRESS_LONG = 4.401580;
 const TRESHOLD_VRT_VICINITY = 0.5; //km
+const EARTH_RADIUS = 6371; //km
 const NOTIFICATION_BUILDER = {
     id: '0',
     ticker: "My Notification Ticker",
@@ -32,30 +34,34 @@ const NOTIFICATION_BUILDER = {
 //https://facebook.github.io/react-native/docs/headless-js-android.html
 //Checks if you are in the vicinity (RADIUS) of the VRT tower.
 //TODO Go to a native implementation for Android
-
 const checkPeriodicVicinityOfVRTTower = async () => {
-    const {longitude, latitude} = await LocationProviderModule.getLastKnownLocation();
-    const distanceFromVRTTower = getDistanceFromVRTTower(latitude, longitude);
-
-    if (distanceFromVRTTower <=TRESHOLD_VRT_VICINITY) {
-        PushNotification.localNotification(NOTIFICATION_BUILDER);
-    }
+    await LocationProviderModule.getLastKnownLocation()
+        .then(({longitude, latitude}) => {
+            const distanceFromVRTTower = getDistanceFromVRT(latitude, longitude);
+            if (shouldShowNotification(distanceFromVRTTower)) {
+                PushNotification.localNotification(NOTIFICATION_BUILDER);
+            }
+        })
+        .catch((error: Error) => {
+            console.log(`An error occurred: ${error.message}`)
+        });
 };
-function getDistanceFromVRTTower(lat : Number, lon : Number) {
-    const R = 6371; // Radius of the earth in km
-    const dLat = deg2rad(VRT_ADDRESS_LAT - lat);  // deg2rad below
+
+const shouldShowNotification = (distanceFromVRTTower) => {
+    (distanceFromVRTTower <= TRESHOLD_VRT_VICINITY) && dateHelper().isMidday();
+};
+
+const getDistanceFromVRT = (lat: Number, lon: Number) => {
+    const deg2rad = (deg) => deg * (Math.PI / 180);
+    const dLat = deg2rad(VRT_ADDRESS_LAT - lat);
     const dLon = deg2rad(VRT_ADDRESS_LONG - lon);
     const a =
         Math.sin(dLat / 2) * Math.sin(dLat / 2) +
         Math.cos(deg2rad(lat)) * Math.cos(deg2rad(VRT_ADDRESS_LAT)) *
         Math.sin(dLon / 2) * Math.sin(dLon / 2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-     // Distance in km
-    return R * c;
 
-    function deg2rad(deg) {
-        return deg * (Math.PI / 180)
-    }
-}
+    return EARTH_RADIUS * c;
+};
 
 export {VRT_VICINITY_JOB_KEY, checkPeriodicVicinityOfVRTTower};
