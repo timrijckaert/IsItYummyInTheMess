@@ -12,6 +12,7 @@ import {
 } from './DI';
 
 import BackgroundJob from "react-native-background-job";
+import FoodList from "./components/FoodList";
 
 class App extends Component {
 
@@ -25,20 +26,10 @@ class App extends Component {
         });
     }
 
-    _handleButtonClick = () => {
-        foodInteractor().getFoodOptionsOfToday()
-            .subscribe(
-                val => alert(`Receiving results from: ${val}.`),
-                err => {
-                    alert(`Error occurred: ${err}`);
-                }
-            );
-    };
-
     render() {
         return (
             <View style={styles.container}>
-                <Button title="Click me to scrape" onPress={this._handleButtonClick}/>
+                <FoodList />
             </View>
         );
     }
