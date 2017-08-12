@@ -4,16 +4,17 @@ import {
     View,
     Button
 } from 'react-native';
-
 import {
+    store,
     VRT_VICINITY_JOB_KEY,
     checkPeriodicVicinityOfVRTTower
 } from './DI';
 
 import BackgroundJob from "react-native-background-job";
 import {FoodList} from "./redux/component";
+import {Provider} from 'react-redux'
 
-class App extends Component {
+class IsItYummyInTheMess extends Component {
 
     componentWillMount() {
         BackgroundJob.cancelAll();
@@ -33,6 +34,12 @@ class App extends Component {
         );
     }
 }
+
+const App = () => (
+  <Provider store={store}>
+      <IsItYummyInTheMess/>
+  </Provider>
+);
 
 BackgroundJob.register({
     jobKey: VRT_VICINITY_JOB_KEY,
