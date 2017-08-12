@@ -6,13 +6,12 @@ import {
 } from 'react-native';
 
 import {
-    foodInteractor,
     VRT_VICINITY_JOB_KEY,
     checkPeriodicVicinityOfVRTTower
 } from './DI';
 
 import BackgroundJob from "react-native-background-job";
-import FoodList from "./components/FoodList";
+import {FoodList} from "./redux/component";
 
 class App extends Component {
 
