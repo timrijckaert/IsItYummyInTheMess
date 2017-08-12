@@ -1,29 +1,42 @@
 import React, { Component } from 'react';
 //noinspection JSUnresolvedVariable
 import BackgroundJob from "react-native-background-job";
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Text, TouchableHighlight } from 'react-native';
 import FoodList from "./FoodList";
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { ActionsCreators } from '../action'
 
-import { VRT_VICINITY_JOB_KEY, checkPeriodicVicinityOfVRTTower } from '../../DI';
+import { isInTheVicinityOfVRTBackgroundTask } from '../../DI';
 
 class IsItYummyInTheMess extends Component {
+
     componentWillMount() {
         BackgroundJob.cancelAll();
         BackgroundJob.schedule({
-            jobKey: VRT_VICINITY_JOB_KEY,
+            jobKey: isInTheVicinityOfVRTBackgroundTask.KEY,
             timeout: Number.MAX_SAFE_INTEGER,
             period: 60 * 60 * 1000, // 1 hour
             persist: true
         });
     }
 
+    _fetchFoodOptionsForToday() {
+        //noinspection JSUnresolvedFunction
+        this.props.fetchFoodOptionsForTodayAction();
+    }
+
     render() {
         return (
             <View style={styles.container}>
-                <FoodList />
+                <Text>
+                    {this.props.foodOptions.length}
+                </Text>
+                <TouchableHighlight onPress={ () => {
+                    this._fetchFoodOptionsForToday()
+                } }>
+                    <Text>Fetch FoodOptions of the day</Text>
+                </TouchableHighlight>
             </View>
         );
     }
@@ -32,10 +45,15 @@ class IsItYummyInTheMess extends Component {
 function mapDispatchToProps(dispatch) {
     return bindActionCreators(ActionsCreators, dispatch);
 }
+function mapStateToProps(state) {
+    return {
+        foodOptions: state.foodOptions
+    }
+}
 
 BackgroundJob.register({
-    jobKey: VRT_VICINITY_JOB_KEY,
-    job: checkPeriodicVicinityOfVRTTower
+    jobKey: isInTheVicinityOfVRTBackgroundTask.KEY,
+    job: isInTheVicinityOfVRTBackgroundTask.checkPeriodicVicinityOfVRTTower
 });
 
 const styles = StyleSheet.create({
@@ -62,6 +80,4 @@ const styles = StyleSheet.create({
 
 // It provides the actions to the underlying components.
 // The first function is a function to manipulate the store
-export default connect(() => {
-    return {}
-}, mapDispatchToProps)(IsItYummyInTheMess);
+export default connect(mapStateToProps, mapDispatchToProps)(IsItYummyInTheMess);

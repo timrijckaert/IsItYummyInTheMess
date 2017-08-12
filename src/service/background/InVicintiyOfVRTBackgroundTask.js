@@ -5,7 +5,7 @@ import {
 } from '../../DI';
 const PushNotification = require('react-native-push-notification');
 
-const VRT_VICINITY_JOB_KEY = "is-in-the-vicinity-of-VRT-tower-background-task";
+const KEY = "is-in-the-vicinity-of-VRT-tower-background-task";
 const VRT_ADDRESS_LAT = 50.853001;
 const VRT_ADDRESS_LONG = 4.401580;
 const THRESHOLD_VRT_VICINITY = 0.5; //km
@@ -80,4 +80,4 @@ const _buildNotification = (notificationText: String) => {
 };
 //</editor-fold>
 
-export {VRT_VICINITY_JOB_KEY, checkPeriodicVicinityOfVRTTower};
+export {KEY, checkPeriodicVicinityOfVRTTower};

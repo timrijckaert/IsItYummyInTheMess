@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
-import {ScrollView} from 'react-native';
-import {foodInteractor} from '../../DI/index';
+import React, { Component } from 'react';
+import { ScrollView } from 'react-native';
+import { foodInteractor } from '../../DI/index';
 import FoodOption from './FoodOption'
 
 class FoodList extends Component {
@@ -13,12 +13,15 @@ class FoodList extends Component {
         foodInteractor().getFoodOptionsOfToday()
             .subscribe(
                 val => this.setState({foodOptions: val}),
-                err => {alert(`Error occurred: ${err}`);}
+                err => {
+                    alert(`Error occurred: ${err}`);
+                }
             );
     }
 
     _renderFoodOptions() {
-        return this.state.foodOptions.map(foodOption => <FoodOption title={foodOption.title} option={foodOption.option}/>)
+        return this.state.foodOptions.map(foodOption => <FoodOption title={foodOption.title}
+                                                                    option={foodOption.option}/>)
     }
 
     render() {

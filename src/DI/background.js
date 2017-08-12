@@ -1,6 +1,13 @@
-import {VRT_VICINITY_JOB_KEY, checkPeriodicVicinityOfVRTTower} from '../service/background/InVicintiyOfVRTBackgroundTask';
+import {
+    KEY,
+    checkPeriodicVicinityOfVRTTower
+} from '../service/background/InVicintiyOfVRTBackgroundTask';
+
+const isInTheVicinityOfVRTBackgroundTask = {
+    KEY,
+    checkPeriodicVicinityOfVRTTower
+};
 
 export {
-    VRT_VICINITY_JOB_KEY,
-    checkPeriodicVicinityOfVRTTower
+    isInTheVicinityOfVRTBackgroundTask
 }
