@@ -1,8 +1,7 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
     StyleSheet,
-    View,
-    Button
+    View
 } from 'react-native';
 
 import {
@@ -11,10 +10,38 @@ import {
     checkPeriodicVicinityOfVRTTower
 } from './DI';
 
+import * as NativeBase from 'native-base';
+
+const {
+    Container,
+    Header,
+    Title,
+    Content,
+    Footer,
+    FooterTab,
+    Button,
+    Left,
+    Right,
+    Body,
+    Icon,
+    Text,
+    Card,
+    CardItem,
+    Spinner
+} = NativeBase;
+
 import BackgroundJob from "react-native-background-job";
 import FoodList from "./components/FoodList";
 
 class App extends Component {
+
+    state = {
+        isLoading: true
+    };
+
+    constructor() {
+        super();
+    }
 
     componentWillMount() {
         BackgroundJob.cancelAll();
@@ -28,9 +55,50 @@ class App extends Component {
 
     render() {
         return (
-            <View style={styles.container}>
-                <FoodList />
-            </View>
+            <Container style={{ backgroundColor: '#2E2D2D' }}>
+                <Header style={{ backgroundColor: '#000000' }} androidStatusBarColor='#000000'>
+                    <Body>
+                    <Title>Is Het Lekker?</Title>
+                    </Body>
+                    <Right/>
+                </Header>
+                <Content contentContainerStyle={{ flex: 1 }} style={{ padding: 8 }}>
+                    {renderIf(true,
+                        <Body style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                        <Spinner color='#FFFFFF'/>
+                        <Text style={{ color: '#FFFFFF', textAlign: 'center' }}>Lekkere gerechten ophalen.</Text>
+                        </Body>
+                    )}
+                    {/*                    <Card transparent style={{ backgroundColor: 0 }}>
+                        <CardItem header style={{ backgroundColor: '#EB5757', minHeight: 150 }}>
+                            <Body>
+                            <Text>This is an example</Text>
+                            </Body>
+                        </CardItem>
+                    </Card>
+                    <Card style={{ backgroundColor: 0 }}>
+                        <CardItem header style={{ backgroundColor: '#F2994A' }}>
+                            <Body>
+                            <Text>This is an example</Text>
+                            </Body>
+                        </CardItem>
+                    </Card>
+                    <Card style={{ backgroundColor: 0 }}>
+                        <CardItem header style={{ backgroundColor: '#F2C94C' }}>
+                            <Body>
+                            <Text>This is an example</Text>
+                            </Body>
+                        </CardItem>
+                    </Card>
+                    <Card style={{ backgroundColor: 0 }}>
+                        <CardItem header style={{ backgroundColor: '#219653' }}>
+                            <Body>
+                            <Text>This is an example</Text>
+                            </Body>
+                        </CardItem>
+                    </Card>*/}
+                </Content>
+            </Container>
         );
     }
 }
@@ -58,5 +126,13 @@ const styles = StyleSheet.create({
         marginBottom: 5,
     },
 });
+
+function renderIf(condition, content) {
+    if (condition) {
+        return content;
+    } else {
+        return null;
+    }
+}
 
 export default App;
