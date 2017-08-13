@@ -21,14 +21,20 @@ class FoodCard extends Component {
         '#9B51E0'
     ];
 
+    _getCardItemStyle(id) {
+        return {
+            backgroundColor: this.colors[id % this.colors.length]
+        };
+    }
+
     render() {
-        const { title, option } = this.props.foodOption;
+        const { id, title, option } = this.props.foodOption;
         return (
             <Card transparent style={styles.foodCardContainer}>
-                <CardItem header style={styles.foodCard}>
+                <CardItem style={this._getCardItemStyle(id)}>
                     <Body>
-                    <Text>{title}</Text>
-                    <Text>{option}</Text>
+                    <Text style={styles.foodOptionTitle}>- {title} -</Text>
+                    <Text style={styles.foodOptionOption}>{option}</Text>
                     </Body>
                 </CardItem>
             </Card>
@@ -40,8 +46,13 @@ const styles = StyleSheet.create({
     foodCardContainer: {
         backgroundColor: 0
     },
-    foodCard: {
-        backgroundColor: '#EB5757'
+    foodOptionTitle: {
+        alignSelf: 'stretch',
+        textAlign: 'center'
+    },
+    foodOptionOption: {
+        alignSelf: 'stretch',
+        textAlign: 'center'
     }
 });
 

@@ -61,7 +61,7 @@ class NetworkService extends IFoodService {
             for (let i = 0; i < titles.length; i++) {
                 const choice = choices[i].trim();
                 if (choice.length > 0) {
-                    foodOptions.push(new FoodOption(titles[i], choice));
+                    foodOptions.push(new FoodOption(i, titles[i], choice));
                 }
             }
             return foodOptions;
