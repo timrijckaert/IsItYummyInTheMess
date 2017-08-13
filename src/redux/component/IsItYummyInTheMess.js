@@ -19,6 +19,7 @@ class IsItYummyInTheMess extends Component {
             period: 60 * 60 * 1000, // 1 hour
             persist: true
         });
+        this._fetchFoodOptionsForToday();
     }
 
     _fetchFoodOptionsForToday() {
@@ -32,9 +33,9 @@ class IsItYummyInTheMess extends Component {
                 <Text>
                     {this.props.foodOptions.length}
                 </Text>
-                <TouchableHighlight onPress={ () => {
+                <TouchableHighlight onPress={() => {
                     this._fetchFoodOptionsForToday()
-                } }>
+                }}>
                     <Text>Fetch FoodOptions of the day</Text>
                 </TouchableHighlight>
             </View>
@@ -45,10 +46,9 @@ class IsItYummyInTheMess extends Component {
 function mapDispatchToProps(dispatch) {
     return bindActionCreators(ActionsCreators, dispatch);
 }
+
 function mapStateToProps(state) {
-    return {
-        foodOptions: state.foodOptions
-    }
+    return { ...state };
 }
 
 BackgroundJob.register({
