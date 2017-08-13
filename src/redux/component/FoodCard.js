@@ -30,7 +30,7 @@ class FoodCard extends Component {
     render() {
         const { id, title, option } = this.props.foodOption;
         return (
-            <Card transparent style={styles.foodCardContainer}>
+            <Card style={styles.foodCardContainer}>
                 <CardItem style={this._getCardItemStyle(id)}>
                     <Body>
                     <Text style={styles.foodOptionTitle}>- {title} -</Text>
@@ -48,11 +48,17 @@ const styles = StyleSheet.create({
     },
     foodOptionTitle: {
         alignSelf: 'stretch',
-        textAlign: 'center'
+        textAlign: 'center',
+        fontFamily: 'courgette',
+        fontSize: 22,
+        color: '#211818'
     },
     foodOptionOption: {
         alignSelf: 'stretch',
-        textAlign: 'center'
+        textAlign: 'center',
+        fontFamily: 'lobster',
+        fontSize: 24,
+        color: '#211818'
     }
 });
 
