@@ -1,11 +1,30 @@
 import React, { Component } from 'react';
-//noinspection JSUnresolvedVariable
 import BackgroundJob from "react-native-background-job";
-import { StyleSheet, View, Text, TouchableHighlight } from 'react-native';
-import FoodList from "./FoodList";
+import { StyleSheet } from 'react-native';
+import * as NativeBase from 'native-base';
+
+const {
+    Container,
+    Header,
+    Title,
+    Content,
+    Footer,
+    FooterTab,
+    Button,
+    Left,
+    Right,
+    Body,
+    Icon,
+    Text,
+    Card,
+    CardItem,
+    Spinner
+} = NativeBase;
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { ActionsCreators } from '../action'
+import StatusBar from './StatusBar'
+import Loading from './Loading'
 
 import { isInTheVicinityOfVRTBackgroundTask } from '../../DI';
 
@@ -19,26 +38,46 @@ class IsItYummyInTheMess extends Component {
             period: 60 * 60 * 1000, // 1 hour
             persist: true
         });
-        this._fetchFoodOptionsForToday();
-    }
-
-    _fetchFoodOptionsForToday() {
         //noinspection JSUnresolvedFunction
         this.props.fetchFoodOptionsForTodayAction();
     }
 
     render() {
         return (
-            <View style={styles.container}>
-                <Text>
-                    {this.props.foodOptions.length}
-                </Text>
-                <TouchableHighlight onPress={() => {
-                    this._fetchFoodOptionsForToday()
-                }}>
-                    <Text>Fetch FoodOptions of the day</Text>
-                </TouchableHighlight>
-            </View>
+            <Container style={styles.appContainer}>
+                <StatusBar/>
+                <Content contentContainerStyle={styles.contentContainer}>
+                    <Loading/>
+                    {/*                    <Card transparent style={{ backgroundColor: 0 }}>
+                        <CardItem header style={{ backgroundColor: '#EB5757', minHeight: 150 }}>
+                            <Body>
+                            <Text>This is an example</Text>
+                            </Body>
+                        </CardItem>
+                    </Card>
+                    <Card style={{ backgroundColor: 0 }}>
+                        <CardItem header style={{ backgroundColor: '#F2994A' }}>
+                            <Body>
+                            <Text>This is an example</Text>
+                            </Body>
+                        </CardItem>
+                    </Card>
+                    <Card style={{ backgroundColor: 0 }}>
+                        <CardItem header style={{ backgroundColor: '#F2C94C' }}>
+                            <Body>
+                            <Text>This is an example</Text>
+                            </Body>
+                        </CardItem>
+                    </Card>
+                    <Card style={{ backgroundColor: 0 }}>
+                        <CardItem header style={{ backgroundColor: '#219653' }}>
+                            <Body>
+                            <Text>This is an example</Text>
+                            </Body>
+                        </CardItem>
+                    </Card>*/}
+                </Content>
+            </Container>
         );
     }
 }
@@ -46,7 +85,6 @@ class IsItYummyInTheMess extends Component {
 function mapDispatchToProps(dispatch) {
     return bindActionCreators(ActionsCreators, dispatch);
 }
-
 function mapStateToProps(state) {
     return { ...state };
 }
@@ -57,26 +95,13 @@ BackgroundJob.register({
 });
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#F5FCFF',
+    appContainer: {
+        backgroundColor: '#2E2D2D'
     },
-    welcome: {
-        fontSize: 20,
-        textAlign: 'center',
-        margin: 10,
-    },
-    instructions: {
-        textAlign: 'center',
-        color: '#333333',
-        marginBottom: 5,
-    },
+    contentContainer: {
+        flex: 1
+    }
 });
-
-// mapStateToProps and mapDispatchToProps are both pure functions that are provided the stores “state” and “dispatch” respectively.
-// Furthermore, both functions have to return an object, whose keys will then be passed on as the props of the component they are connected to.
 
 // It provides the actions to the underlying components.
 // The first function is a function to manipulate the store
