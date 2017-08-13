@@ -2,29 +2,14 @@ import React, { Component } from 'react';
 import BackgroundJob from "react-native-background-job";
 import { StyleSheet } from 'react-native';
 import * as NativeBase from 'native-base';
-
-const {
-    Container,
-    Header,
-    Title,
-    Content,
-    Footer,
-    FooterTab,
-    Button,
-    Left,
-    Right,
-    Body,
-    Icon,
-    Text,
-    Card,
-    CardItem,
-    Spinner
-} = NativeBase;
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { ActionsCreators } from '../action'
 import StatusBar from './StatusBar'
 import Loading from './Loading'
+import FoodOptionsList from './FoodOptionsList'
+
+const { Container, Content } = NativeBase;
 
 import { isInTheVicinityOfVRTBackgroundTask } from '../../DI';
 
@@ -48,34 +33,7 @@ class IsItYummyInTheMess extends Component {
                 <StatusBar/>
                 <Content contentContainerStyle={styles.contentContainer}>
                     <Loading/>
-                    {/*                    <Card transparent style={{ backgroundColor: 0 }}>
-                        <CardItem header style={{ backgroundColor: '#EB5757', minHeight: 150 }}>
-                            <Body>
-                            <Text>This is an example</Text>
-                            </Body>
-                        </CardItem>
-                    </Card>
-                    <Card style={{ backgroundColor: 0 }}>
-                        <CardItem header style={{ backgroundColor: '#F2994A' }}>
-                            <Body>
-                            <Text>This is an example</Text>
-                            </Body>
-                        </CardItem>
-                    </Card>
-                    <Card style={{ backgroundColor: 0 }}>
-                        <CardItem header style={{ backgroundColor: '#F2C94C' }}>
-                            <Body>
-                            <Text>This is an example</Text>
-                            </Body>
-                        </CardItem>
-                    </Card>
-                    <Card style={{ backgroundColor: 0 }}>
-                        <CardItem header style={{ backgroundColor: '#219653' }}>
-                            <Body>
-                            <Text>This is an example</Text>
-                            </Body>
-                        </CardItem>
-                    </Card>*/}
+                    <FoodOptionsList/>
                 </Content>
             </Container>
         );
@@ -85,6 +43,7 @@ class IsItYummyInTheMess extends Component {
 function mapDispatchToProps(dispatch) {
     return bindActionCreators(ActionsCreators, dispatch);
 }
+
 function mapStateToProps(state) {
     return { ...state };
 }
