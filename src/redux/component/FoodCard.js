@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
         alignSelf: 'stretch',
         textAlign: 'center',
         fontFamily: 'courgette',
-        fontSize: 22,
+        fontSize: 20,
         color: '#211818'
     },
     foodOptionOption: {

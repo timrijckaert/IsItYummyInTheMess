@@ -16,7 +16,6 @@ class Loading extends Component {
         "Ophalen van lekkere gerechten.",
         "Njam njam",
         "Lekker in de mess",
-        "Even geduld.",
         "Zouden het frietjes zijn vandaag?!",
         "Snellllleeeeeerrr!",
         "Broodjes Smeren ..."

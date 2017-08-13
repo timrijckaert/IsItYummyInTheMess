@@ -14,7 +14,7 @@ class DatabaseHelper {
     saveFoodOptionsForToday(foodOptionsArr) {
         let todaysDateStr = this._dateHelper.today();
         const dbFoodOptions = Array.from(foodOptionsArr, foodOption =>
-            new DbFoodOption(`${todaysDateStr}${foodOption.title}`, foodOption.title, foodOption.option)
+            new DbFoodOption(`${foodOption.id}`, foodOption.title, foodOption.option)
         );
         const dbMenu = new DbMenu(dbFoodOptions, todaysDateStr);
         this._realm.write(() => {
@@ -27,7 +27,7 @@ class DatabaseHelper {
     }
 
     _getFoodOptionsForDate(date) {
-        const mapDbFoodOptionToFoodOption = (foodOption) => new FoodOption(foodOption._title, foodOption._option);
+        const mapDbFoodOptionToFoodOption = (foodOption) => new FoodOption(foodOption._id, foodOption._title, foodOption._option);
         //noinspection JSUnresolvedFunction
         const menuForDate = this._realm.objects(DbMenu.realmClassName()).filtered(`_date = "${date}"`).slice();
         const foodOptionsArr = menuForDate.map((dbMenu) => dbMenu._dbFoodOptions.map((dbFoodOption) => mapDbFoodOptionToFoodOption(dbFoodOption)));

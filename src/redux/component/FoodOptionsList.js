@@ -23,12 +23,14 @@ class FoodOptionsList extends Component {
     render() {
         return (
             <List dataArray={this.props.foodOptions}
-                  renderRow={this._renderFoodOption}/>
+                  renderRow={this._renderFoodOption}
+                  style={styles.list}/>
         );
     }
 }
 
 const styles = StyleSheet.create({
+    list: {},
     listItem: {
         borderBottomWidth: 0
     }
