@@ -8,8 +8,9 @@ import { ActionsCreators } from '../action'
 import StatusBar from './StatusBar'
 import Loading from './Loading'
 import FoodOptionsList from './FoodOptionsList'
+import RefreshFab from './RefreshFab'
 
-const { Container, Content } = NativeBase;
+const {Container, Content} = NativeBase;
 
 import { isInTheVicinityOfVRTBackgroundTask } from '../../DI';
 
@@ -33,6 +34,7 @@ class IsItYummyInTheMess extends Component {
                 <StatusBar/>
                 <Content contentContainerStyle={styles.contentContainer}>
                     <Loading/>
+                    <RefreshFab />
                     <FoodOptionsList/>
                 </Content>
             </Container>
@@ -45,7 +47,7 @@ function mapDispatchToProps(dispatch) {
 }
 
 function mapStateToProps(state) {
-    return { ...state };
+    return {...state};
 }
 
 BackgroundJob.register({
