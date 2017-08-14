@@ -18,7 +18,8 @@ class DatabaseHelper {
         );
         const dbMenu = new DbMenu(dbFoodOptions, todaysDateStr);
         this._realm.write(() => {
-            this._realm.create(DbMenu.realmClassName(), dbMenu)
+            let shouldUpdateItem = true;
+            this._realm.create(DbMenu.realmClassName(), dbMenu, shouldUpdateItem)
         });
     }
 

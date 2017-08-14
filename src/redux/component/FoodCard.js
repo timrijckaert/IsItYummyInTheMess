@@ -15,7 +15,6 @@ class FoodCard extends Component {
         '#EB5757',
         '#F2994A',
         '#F2C94C',
-        '#219653',
         '#27AE60',
         '#2F80ED',
         '#9B51E0'

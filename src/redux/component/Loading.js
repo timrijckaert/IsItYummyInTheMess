@@ -43,11 +43,7 @@ class Loading extends Component {
 }
 
 const styles = StyleSheet.create({
-    spinnerContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
+    spinnerContainer: {},
     spinnerSubText: {
         color: '#FFFFFF',
         textAlign: 'center'

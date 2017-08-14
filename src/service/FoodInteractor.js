@@ -1,5 +1,5 @@
 import * as Rx from "rxjs";
-import {IFoodService} from "./IFoodService";
+import { IFoodService } from "./IFoodService";
 
 class FoodInteractor extends IFoodService {
 
@@ -10,14 +10,20 @@ class FoodInteractor extends IFoodService {
         this._databaseHelper = databaseHelper;
     }
 
-    getFoodOptionsOfToday() {
+    getFoodOptionsOfToday(fetchFromRemote = false) {
         const networkObservable = this._getRemoteObservable(this._databaseHelper);
         const dbObservable = this._getLocalObservable();
 
-        return Rx.Observable.merge(
-            networkObservable,
-            dbObservable
-        ).first();
+        return FoodInteractor._getMergedObservable(networkObservable, dbObservable, fetchFromRemote);
+    }
+
+    static _getMergedObservable(networkObservable, dbObservable, fetchFromRemote) {
+        return fetchFromRemote ?
+            networkObservable :
+            Rx.Observable.merge(
+                networkObservable,
+                dbObservable
+            ).first();
     }
 
     _getLocalObservable() {
@@ -33,4 +39,4 @@ class FoodInteractor extends IFoodService {
     }
 }
 
-export {FoodInteractor}
+export { FoodInteractor }

@@ -5,10 +5,7 @@ import * as NativeBase from 'native-base';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { ActionsCreators } from '../action'
-import StatusBar from './StatusBar'
-import Loading from './Loading'
-import FoodOptionsList from './FoodOptionsList'
-import RefreshFab from './RefreshFab'
+import { StatusBar, Loading, FoodOptionsList, RefreshFab } from './'
 
 const {Container, Content} = NativeBase;
 
@@ -28,14 +25,19 @@ class IsItYummyInTheMess extends Component {
         this.props.fetchFoodOptionsForTodayAction();
     }
 
+    _onRefreshFabButtonClicked() {
+        //noinspection JSUnresolvedFunction
+        this.props.refreshFoodOptionsForTodayAction();
+    }
+
     render() {
         return (
             <Container style={styles.appContainer}>
                 <StatusBar/>
                 <Content contentContainerStyle={styles.contentContainer}>
-                    <Loading/>
-                    <RefreshFab />
                     <FoodOptionsList/>
+                    <RefreshFab onRefreshFabButtonClicked={this._onRefreshFabButtonClicked.bind(this)}/>
+                    <Loading/>
                 </Content>
             </Container>
         );
